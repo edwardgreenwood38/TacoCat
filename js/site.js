@@ -6,8 +6,10 @@ function getValue() {
 
     let userText = document.getElementById("userString").value;
 
+    // check for palindrome
     let palindrome = palindromeCheck(userText);
 
+    // display out message
     displayTacocat(palindrome);
 }
 
@@ -16,53 +18,42 @@ function getValue() {
 // logic
 function palindromeCheck(userText) {
     let revString = [];
-    let userString = [];
+    let returnObj = {}; // to hold multiple items on return
+
+    userText = userText.toLowerCase();
+    
+    // remove spaces and special characters
+    let regex = /[^a-z0-9]/gi;
+    userText = userText.replace(regex, "");
 
     // reverse a string using a for loop
     for (let i = userText.length - 1; i >= 0; i--)
     {
-        // skip spaces
-        if (userText[i] != " ")
-        {
-            revString += userText[i];
-        }
+        revString += userText[i];
     }
-
-    //remove space from userText
-    for (let i = 0; i <= userText.length -1; i++)
-    {
-        if (userText[i] != " ")
-        {
-            userString += userText[i];
-        }
-    }
-
-    // convert to lower case 
-    let lowerRevString = revString.toLowerCase();
-    let lowerUserString = userString.toLowerCase();
 
     // check if userString and revString are the same 
-    if (lowerRevString == lowerUserString)
+    if (revString == userText)
     {
-        return true;
+        returnObj.msg = "Well done! You entered a palindrome!";
     }
     else
     {
-        return false;
+        returnObj.msg = "Sorry! you did not enter a palindrome!";
     }
+
+    // add reversed string to obj
+    returnObj.reversed = revString;
+
+    return returnObj;
 }
 
 
 // display results
 function displayTacocat(status) {
     // write message to page
-    if (status){
-        document.getElementById("msg").innerHTML = `Your string is a palindrome.`;
-    }
-    else {
-        document.getElementById("msg").innerHTML = `Your string is not a palindrome.`;
-    }
-    
+    document.getElementById("alertHeader").innerHTML = status.msg;
+    document.getElementById("msg").innerHTML = `Your phrase reversed is: ${status.reversed}`;
 
     // show the alert box
     document.getElementById("alert").classList.remove("invisible");
